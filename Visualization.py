@@ -22,7 +22,7 @@ def visualize_solution(bin, boxes):
     plt.show()
 
 
-def visualize_individual(containers):
+def visualize_individual(containers, description):
     colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k', '#FF6000', '#43FF00', '#FCFF00', '#8400FF', '#0095FF', '#603702',
               '#8B8B8B']
     fig, axes = plt.subplots(len(containers), subplot_kw=dict(projection='3d'))
@@ -41,6 +41,7 @@ def visualize_individual(containers):
             c = np.random.choice(colors)
             axes.add_collection3d(Poly3DCollection(box.get_box_faces(),
                                                    facecolors=c, linewidths=0.27, edgecolors='k', alpha=.35))
+    plt.savefig(f"{description}.png")
     plt.show()
 
 
@@ -78,6 +79,7 @@ def animate(i, containers, axes):
 
 def animate_containers(containers, description):
     fig, axes = plt.subplots(nrows=1, ncols=len(containers), subplot_kw=dict(projection='3d'))
+    #fig, axes = plt.subplots(nrows=1, ncols=1, subplot_kw=dict(projection='3d'))
     fig.set_size_inches(10, 6)
     fig.suptitle(description)
     frames = 0
@@ -86,7 +88,7 @@ def animate_containers(containers, description):
     ani = FuncAnimation(fig, animate, fargs=(containers, axes), frames=frames, interval=150,
                         repeat=False)
     # uncomment this if you want to save the gif
-    #ani.save(description + ".GIF")
+    ani.save(description + ".GIF")
     plt.show()
 
 

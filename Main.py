@@ -415,8 +415,26 @@ if __name__ == "__main__":
         "bestFor180BoxespriorityFitness": [],
         "worstFor180BoxespriorityFitness": []}
 
+    #### Test ours
+    boxNumber = 170
+    helper = Helper(120, 120, 220)
+    #boxes = helper.create_boxes(boxNumber)
+    boxes = helper.create_boxes("items.csv")
+    pop, stats, hallOfFame, hallOfShame = main()
+    pop.sort(key=lambda x: x.fitness, reverse=True)
+    # best individual
+    best_ind = hallOfFame[-1]
+    worst_ind = hallOfShame[0]
+
+    containers = helper.pack_solution(worst_ind, copy.deepcopy(boxes))
+    animate_containers(containers, "Viz_emballage1")
+    #visualize_individual(containers, "Viz_emballage1")
+
+
+
     # this is when the Space and prority are both in the evaluation funtion
     # this will be only using in the situation. one by one will provide at end
+    """
     boxesNumbers = [70, 140, 200]
     for boxNumber in boxesNumbers:
         helper = Helper(120, 120, 220)
@@ -434,6 +452,7 @@ if __name__ == "__main__":
             # worst individual
             containers = helper.pack_solution(best_ind, copy.deepcopy(boxes))
             animate_containers(containers, "Best individual across all generations with boxes " + str(boxNumber))
+            visualize_individual(containers)
         if (boxNumber == 140):
             containers = helper.pack_solution(worst_ind, copy.deepcopy(boxes))
             animate_containers(containers, "Worst individual across all generations with boxes " + str(boxNumber))
@@ -448,7 +467,7 @@ if __name__ == "__main__":
             animate_containers(containers, "Best individual across all generations with boxes " + str(boxNumber))
         FillDataList(dataList)
         paretoGraph(pop, boxNumber)
-
+    """
     # PlotDataList(dataList)
 
     # 70

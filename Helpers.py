@@ -2,6 +2,7 @@ import numpy as np
 from Heuristics import *
 from Container import *
 from Box import *
+import csv
 
 
 class Helper(object):
@@ -10,7 +11,7 @@ class Helper(object):
         self.container_height = container_height
         self.container_depth = container_depth
 
-    def create_boxes(self, n):
+    def create_boxes1(self, n):
         boxes = []
         possible_widths = [self.container_width * 0.75, 60, 50, 40, 30, 20, 10]
         possible_heights = [self.container_height * 0.75, 60, 50, 40, 30, 20, 10]
@@ -23,6 +24,25 @@ class Helper(object):
             d = np.random.choice(possible_depths, p=[0.05, 0.08, 0.11, 0.19, 0.19, 0.19, 0.19])
             # keep the boxes on 0 orientation for reference when applying orientation.
             boxes.append(Box(i + 1, w, h, d, 0, priorities[i]))
+        return boxes
+
+    def create_boxes(self, csv_filename):
+        boxes = []
+        priorities = []
+        with open(csv_filename, 'r') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader)  # Skip the header row if there is one
+            for i, row in enumerate(reader):
+                w = float(row[0])
+                h = float(row[1])
+                d = float(row[2])
+                priorities.append(int(row[3]) if len(row) > 3 else i)  # If a priority is provided, use it; otherwise, use index as priority
+                boxes.append(Box(i + 1, w, h, d, 0, priorities[-1]))
+
+        np.random.shuffle(priorities)  # Shuffle priorities if needed, otherwise remove this line
+        for i in range(len(boxes)):
+            boxes[i].priority = priorities[i]  # Assign shuffled priorities
+
         return boxes
 
     @staticmethod
